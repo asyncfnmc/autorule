@@ -64,7 +64,7 @@ jobs:
           ls -lah artifacts
 
       - name: Upload workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: autorule-jars
           path: artifacts/*.jar
