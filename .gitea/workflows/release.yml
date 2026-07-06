@@ -19,18 +19,21 @@ jobs:
       - name: Install Java
         run: |
           sudo /sbin/apk update
-          sudo /sbin/apk add --no-cache openjdk21-jre
+          sudo /sbin/apk add --no-cache ca-certificates openjdk21-jdk
+          sudo update-ca-certificates
 
       - name: Install build tools
         run: |
-          sudo /sbin/apk add --no-cache curl jq
+          sudo /sbin/apk add --no-cache curl jq unzip
 
       - name: Build
+        env:
+          GRADLE_OPTS: -Djava.net.preferIPv4Stack=true -Dhttp.keepAlive=false
         run: |
           if [ -x ./gradlew ]; then
-            ./gradlew --no-daemon clean build
+            ./gradlew --no-daemon --stacktrace clean build
           else
-            gradle --no-daemon clean build
+            gradle --no-daemon --stacktrace clean build
           fi
 
       - name: Collect jars
