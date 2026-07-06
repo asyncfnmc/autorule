@@ -29,6 +29,21 @@ jobs:
       - name: Check network
         run: |
           curl -4 --fail --location --head https://piston-meta.mojang.com/mc/game/version_manifest_v2.json
+          curl -4 --fail --location --head https://piston-data.mojang.com/v1/objects/ba2df812c2d12e0219c489c4cd9a5e1f0760f5bd/client.jar
+
+      - name: Prefetch Minecraft jars
+        run: |
+          set -eu
+          mkdir -p "$HOME/.gradle/caches/fabric-loom/1.21.11"
+          curl -4 --fail --location --retry 5 --retry-delay 3 \
+            https://piston-meta.mojang.com/mc/game/version_manifest_v2.json \
+            -o "$HOME/.gradle/caches/fabric-loom/mojang_versions_manifest.json"
+          curl -4 --fail --location --retry 5 --retry-delay 3 \
+            https://piston-data.mojang.com/v1/objects/ba2df812c2d12e0219c489c4cd9a5e1f0760f5bd/client.jar \
+            -o "$HOME/.gradle/caches/fabric-loom/1.21.11/minecraft-client.jar"
+          curl -4 --fail --location --retry 5 --retry-delay 3 \
+            https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar \
+            -o "$HOME/.gradle/caches/fabric-loom/1.21.11/minecraft-server.jar"
 
       - name: Build
         env:
