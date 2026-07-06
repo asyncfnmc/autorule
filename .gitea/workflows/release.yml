@@ -18,7 +18,7 @@ jobs:
 
       - name: Install build tools
         run: |
-          apk add --no-cache openjdk21 gradle curl jq
+          sudo apk add --no-cache openjdk21 gradle curl jq
 
       - name: Build
         run: |
