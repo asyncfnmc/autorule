@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "autorule",
+  "version": "${version}",
+  "name": "Autorule",
+  "description": "Client-side visual formatter for Hypixel Autopet messages.",
+  "authors": ["asyncfn"],
+  "license": "Source Available - Personal Use Only, All Rights Reserved",
+  "icon": "assets/autorule/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.autorule.AutoRuleClient"
+    ]
+  },
+  "mixins": [
+    "autorule.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

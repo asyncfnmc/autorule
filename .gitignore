@@ -1,0 +1,20 @@
+# Gradle
+.gradle/
+build/
+
+# IDEs/editors
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+hs_err_pid*
+replay_pid*
+
+# Minecraft/Fabric runtime output
+run/
