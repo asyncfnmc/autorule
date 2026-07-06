@@ -14,6 +14,20 @@ Petswap! >> lvl100 Black Cat
 
 It preserves pet name colors where possible and cleans up extra visual noise.
 
+## Examples
+
+<p align="center">
+  <img src="chat_message_flyingfish.png" alt="Flying Fish Autopet message example">
+</p>
+
+<p align="center">
+  <img src="chat_message_mosquito.png" alt="Mosquito Autopet message example">
+</p>
+
+<p align="center">
+  <img src="chat_message_rosedrag.png" alt="Golden Dragon Autopet message example">
+</p>
+
 ## Requirements
 
 - Minecraft 1.21.11
