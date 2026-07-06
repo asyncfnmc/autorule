@@ -16,9 +16,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Java
+        run: |
+          sudo /sbin/apk update
+          sudo /sbin/apk add --no-cache openjdk21-jre
+
       - name: Install build tools
         run: |
-          sudo apk add --no-cache openjdk21 gradle curl jq
+          sudo /sbin/apk add --no-cache openjdk21 gradle curl jq
 
       - name: Build
         run: |
