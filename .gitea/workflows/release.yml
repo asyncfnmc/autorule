@@ -8,7 +8,9 @@ on:
 
 jobs:
   build:
-    runs-on: alpine:host
+    # act_runner labels are configured as "label:executor" (for example
+    # "alpine:host"), but workflows match only the label name.
+    runs-on: alpine
 
     steps:
       - name: Checkout
