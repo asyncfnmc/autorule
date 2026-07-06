@@ -26,9 +26,14 @@ jobs:
         run: |
           sudo /sbin/apk add --no-cache curl jq unzip
 
+      - name: Check network
+        run: |
+          curl -4 --fail --location --head https://piston-meta.mojang.com/mc/game/version_manifest_v2.json
+
       - name: Build
         env:
-          GRADLE_OPTS: -Djava.net.preferIPv4Stack=true -Dhttp.keepAlive=false
+          JAVA_TOOL_OPTIONS: -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false -Dhttp.keepAlive=false
+          GRADLE_OPTS: -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false -Dhttp.keepAlive=false
         run: |
           if [ -x ./gradlew ]; then
             ./gradlew --no-daemon --stacktrace clean build
