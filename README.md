@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="32px-Hungry_Flying_Fish_Skin_(White_Fish_Black_Axolotl).webp" alt="Autorule icon" width="64" height="64">
+  <img src="240px-Hungry_Flying_Fish_Skin_(White_Fish_Black_Axolotl).png" alt="Autorule icon" width="64" height="64">
 </p>
 
 # Autorule
