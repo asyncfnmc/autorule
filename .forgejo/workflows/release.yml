@@ -19,7 +19,7 @@ jobs:
       - name: Install Java
         run: |
           sudo /sbin/apk update
-          sudo /sbin/apk add --no-cache ca-certificates openjdk21-jdk
+          sudo /sbin/apk add --no-cache ca-certificates openjdk21
           sudo update-ca-certificates
 
       - name: Install build tools
