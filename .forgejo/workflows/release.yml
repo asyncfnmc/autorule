@@ -1,0 +1,64 @@
+name: Build release jar
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: alpine:host
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          apk add --no-cache openjdk21 gradle curl jq
+
+      - name: Build
+        run: |
+          if [ -x ./gradlew ]; then
+            ./gradlew --no-daemon clean build
+          else
+            gradle --no-daemon clean build
+          fi
+
+      - name: Collect jars
+        run: |
+          mkdir -p artifacts
+          cp build/libs/*.jar artifacts/
+          rm -f artifacts/*-sources.jar
+          ls -lah artifacts
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autorule-jars
+          path: artifacts/*.jar
+          if-no-files-found: error
+
+      - name: Create Forgejo release and upload jar
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          SERVER: ${{ github.server_url }}
+        run: |
+          set -eu
+          API="$SERVER/api/v1/repos/$REPO"
+          RELEASE_ID="$(curl -fsS \
+            -H "Authorization: token $TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"tag_name\":\"$TAG\",\"name\":\"$TAG\",\"body\":\"Autorule $TAG\",\"draft\":false,\"prerelease\":false}" \
+            "$API/releases" | jq -r .id)"
+
+          for jar in artifacts/*.jar; do
+            curl -fsS \
+              -H "Authorization: token $TOKEN" \
+              -F "attachment=@$jar" \
+              "$API/releases/$RELEASE_ID/assets?name=$(basename "$jar")"
+          done
