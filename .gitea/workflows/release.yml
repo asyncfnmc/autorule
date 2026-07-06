@@ -23,7 +23,7 @@ jobs:
 
       - name: Install build tools
         run: |
-          sudo /sbin/apk add --no-cache openjdk21 gradle curl jq
+          sudo /sbin/apk add --no-cache curl jq
 
       - name: Build
         run: |
