@@ -2,11 +2,11 @@ package com.autorule;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.ChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,27 +30,12 @@ public final class AutoRuleClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientReceiveMessageEvents.MODIFY_GAME.register((message, overlay) -> {
-            Text formattedMessage = formatAutopetMessage(message);
+            Component formattedMessage = formatAutopetMessage(message);
             return formattedMessage == null ? message : formattedMessage;
-        });
-
-        ClientReceiveMessageEvents.ALLOW_CHAT.register((message, signedMessage, sender, params, receptionTimestamp) -> {
-            Text formattedMessage = formatAutopetMessage(message);
-            if (formattedMessage == null) {
-                return true;
-            }
-
-            MinecraftClient client = MinecraftClient.getInstance();
-            client.execute(() -> {
-                if (client.inGameHud != null) {
-                    client.inGameHud.getChatHud().addMessage(formattedMessage);
-                }
-            });
-            return false;
         });
     }
 
-    public static Text formatAutopetMessage(Text message) {
+    public static Component formatAutopetMessage(Component message) {
         String rawMessage = message.getString();
         String plainMessage = stripLegacyFormatting(rawMessage);
         Matcher matcher = AUTOPET_PATTERN.matcher(plainMessage);
@@ -72,9 +57,9 @@ public final class AutoRuleClient implements ClientModInitializer {
             petColor = TextColor.fromRgb(0xFFFFFF);
         }
 
-        return Text.empty()
-                .append(Text.literal("Petswap! >> ").formatted(Formatting.RED))
-                .append(Text.literal("lvl" + level + " "))
+        return Component.empty()
+                .append(Component.literal("Petswap! >> ").withStyle(ChatFormatting.RED))
+                .append(Component.literal("lvl " + level + " ").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xE7E7E7))))
                 .append(pet.toText(petColor));
     }
 
@@ -113,9 +98,9 @@ public final class AutoRuleClient implements ClientModInitializer {
 
         for (int i = petNameStart - 2; i >= 0; i--) {
             if (rawMessage.charAt(i) == '§' && i + 1 < rawMessage.length()) {
-                Formatting formatting = Formatting.byCode(rawMessage.charAt(i + 1));
-                if (formatting != null && formatting.isColor()) {
-                    return TextColor.fromFormatting(formatting);
+                ChatFormatting formatting = ChatFormatting.getByCode(rawMessage.charAt(i + 1));
+                if (formatting != null && TextColor.fromLegacyFormat(formatting) != null) {
+                    return TextColor.fromLegacyFormat(formatting);
                 }
             }
         }
@@ -123,7 +108,7 @@ public final class AutoRuleClient implements ClientModInitializer {
         return null;
     }
 
-    private static TextColor findPetNameColor(Text message, String petName) {
+    private static TextColor findPetNameColor(Component message, String petName) {
         if (message == null || petName == null || petName.isEmpty()) {
             return null;
         }
@@ -161,19 +146,19 @@ public final class AutoRuleClient implements ClientModInitializer {
             return baseName == null ? fullName : baseName;
         }
 
-        private Text toText(TextColor petColor) {
+        private Component toText(TextColor petColor) {
             TextColor safePetColor = petColor == null ? TextColor.fromRgb(0xFFFFFF) : petColor;
 
             if (cosmeticLevel == null) {
-                return Text.literal(fullName == null ? "" : fullName).setStyle(Style.EMPTY.withColor(safePetColor));
+                return Component.literal(fullName == null ? "" : fullName).setStyle(Style.EMPTY.withColor(safePetColor));
             }
 
-            return Text.empty()
-                    .append(Text.literal("[").setStyle(Style.EMPTY.withColor(safePetColor)))
-                    .append(Text.literal(cosmeticLevel == null ? "" : cosmeticLevel).setStyle(Style.EMPTY.withColor(safePetColor)))
-                    .append(Text.literal(cosmeticSymbol == null ? "" : cosmeticSymbol).formatted(Formatting.DARK_RED))
-                    .append(Text.literal("] ").setStyle(Style.EMPTY.withColor(safePetColor)))
-                    .append(Text.literal(baseName == null ? "" : baseName).setStyle(Style.EMPTY.withColor(safePetColor)));
+            return Component.empty()
+                    .append(Component.literal("[").setStyle(Style.EMPTY.withColor(safePetColor)))
+                    .append(Component.literal(cosmeticLevel == null ? "" : cosmeticLevel).setStyle(Style.EMPTY.withColor(safePetColor)))
+                    .append(Component.literal(cosmeticSymbol == null ? "" : cosmeticSymbol).withStyle(ChatFormatting.DARK_RED))
+                    .append(Component.literal("] ").setStyle(Style.EMPTY.withColor(safePetColor)))
+                    .append(Component.literal(baseName == null ? "" : baseName).setStyle(Style.EMPTY.withColor(safePetColor)));
         }
     }
 

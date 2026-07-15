@@ -9,7 +9,7 @@ A tiny client-side Fabric mod that makes Hypixel Autopet messages easier to read
 When Autopet equips a pet, Autorule rewrites the chat message into a compact format like:
 
 ```text
-Petswap! >> lvl100 Black Cat
+Petswap! >> lvl 100 Black Cat
 ```
 
 It preserves pet name colors where possible and cleans up extra visual noise.
@@ -17,15 +17,15 @@ It preserves pet name colors where possible and cleans up extra visual noise.
 ## Examples
 
 <p align="center">
-  <img src="chat_message_flyingfish.png" alt="Flying Fish Autopet message example">
+  <img src="chat_message_flying_fish.png" alt="Flying Fish Autopet message example">
 </p>
 
 <p align="center">
-  <img src="chat_message_mosquito.png" alt="Mosquito Autopet message example">
+  <img src="chat_message_golden_drag.png" alt="Golden Dragon Autopet message example">
 </p>
 
 <p align="center">
-  <img src="chat_message_rosedrag.png" alt="Golden Dragon Autopet message example">
+  <img src="chat_message_rose_drag.png" alt="Rose Dragon Autopet message example">
 </p>
 
 ## Requirements
