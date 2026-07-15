@@ -25,7 +25,7 @@ It preserves pet name colors where possible and cleans up extra visual noise.
 </p>
 
 <p align="center">
-  <img src="chat_message_rose_drag.png" alt="Rose Dragon Autopet message example">
+  <img src="chat_message_rosie.png" alt="Rosie Autopet message example">
 </p>
 
 ## Requirements
